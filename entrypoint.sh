@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# Start Ollama in background
-ollama serve --addr 0.0.0.0:11434 &
+# Start the Ollama server in the background
+ollama serve &
 
-# Wait for Ollama to boot
+# Wait for the server to boot
 sleep 5
 
 # Pull the model
 ollama pull smollm:135m
 
-# Keep Ollama running in foreground
+# Keep Ollama running
 wait
