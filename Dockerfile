@@ -8,11 +8,12 @@ RUN apt-get update && \
 # Install Ollama
 RUN curl -fsSL https://ollama.ai/install.sh | sh
 
-# Preload the smollm model
-RUN ollama pull smollm:135m
-
 # Expose Ollama's default port
 EXPOSE 11434
 
-# Start the Ollama server
-CMD ["ollama", "serve"]
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Start Ollama + preload model
+CMD ["/entrypoint.sh"]
