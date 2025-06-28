@@ -1,16 +1,19 @@
 #!/bin/bash
+set -e
 
-# Set host to 0.0.0.0 so Render can access it
-export OLLAMA_HOST=0.0.0.0
+export OLLAMA_HOST=0.0.0.0:11434
 
-# Start Ollama in background
+echo "Starting Ollama server..."
 ollama serve &
+OLLAMA_PID=$!
 
-# Wait for server to be ready
-sleep 5
+echo "Waiting for Ollama to be ready..."
+while ! curl -s http://localhost:11434/api/tags >/dev/null 2>&1; do
+    sleep 2
+done
 
-# Pull the model
+echo "Pulling smollm:135m model..."
 ollama pull smollm:135m
 
-# Keep it alive
-wait
+echo "Ollama is ready!"
+wait $OLLAMA_PID
